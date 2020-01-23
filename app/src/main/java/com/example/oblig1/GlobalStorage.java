@@ -18,4 +18,13 @@ public class GlobalStorage extends Application {
     public boolean removeImage(Image image){
         return this.images.remove(image);
     }
+
+    public Image getImage(int id){
+        for(int i = 0;i<images.size();i++){
+            if(images.get(i).getId() == id){
+                return images.get(i);
+            }
+        }
+        return null;
+    }
 }

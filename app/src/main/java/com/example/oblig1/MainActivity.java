@@ -29,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+    public void gotoDB(View view) {
+        // Do something in response to button
+        Intent intent = new Intent(this, Database.class);
+
+        startActivity(intent);
+    }
 
     private void initImages(){
         Image img1 = new Image("Amy", R.drawable.amy);
