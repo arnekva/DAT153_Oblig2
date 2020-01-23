@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Oblig1</string>
+    <string name="app_name">Bildekviss</string>
+    <string name="title_activity_test">TestAct</string>
+    <string name="velkommen_til_bildekviss">Velkommen til bildekviss</string>
+    <string name="start_kviss">Start Kviss</string>
+    <string name="title_activity_database">Database</string>
 </resources>
