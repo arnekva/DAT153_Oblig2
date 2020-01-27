@@ -28,11 +28,28 @@
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_height="555dp"
+        android:layout_marginTop="140dp"
         app:layout_anchor="@+id/appBarLayout"
         app:layout_anchorGravity="bottom|center">
 
     </ListView>
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="80dp"
+        android:onClick="loadUpImage"
+        android:text="Add Image" />
+
+    <EditText
+        android:id="@+id/nameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

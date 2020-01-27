@@ -1,6 +1,7 @@
 package com.example.oblig1;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,9 @@ public class CustomList extends ArrayAdapter<String>{
 
     private final Activity context;
     private final String[] name;
-    private final Integer[] imageId;
+    private final Uri[] imageId;
 
-    public CustomList(Activity context, String[] name, Integer[] imageId) {
+    public CustomList(Activity context, String[] name, Uri[] imageId) {
         super(context, R.layout.list_single, name);
         this.context = context;
         this.name = name;
@@ -30,12 +31,12 @@ public class CustomList extends ArrayAdapter<String>{
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
 
         txtTitle.setText(name[position]);
-        imageView.setImageResource(imageId[position]);
+        imageView.setImageURI(imageId[position]);
         return rowView;
     }
     public String[] getNames(){
     return name;}
-    public Integer[] getIds(){
+    public Uri[] getIds(){
         return imageId;
     }
 }

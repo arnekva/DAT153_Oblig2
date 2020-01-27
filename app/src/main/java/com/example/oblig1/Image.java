@@ -1,10 +1,12 @@
 package com.example.oblig1;
 
+import android.net.Uri;
+
 public class Image {
     private String name;
-    private int id;
+    private Uri id;
 
-    public Image(String n, int i){
+    public Image(String n, Uri i){
         this.name = n;
         this.id = i;
     }
@@ -17,11 +19,11 @@ public class Image {
         this.name = name;
     }
 
-    public int getId() {
+    public Uri getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Uri id) {
         this.id = id;
     }
 }

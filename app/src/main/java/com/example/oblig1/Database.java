@@ -1,20 +1,28 @@
 package com.example.oblig1;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class Database extends AppCompatActivity {
@@ -22,12 +30,13 @@ public class Database extends AppCompatActivity {
     ListView list;
     ArrayList<Image> images;
     String[] name;
-    Integer[] imageId;
+    Uri[] imageId;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
     private void splitListToTable(){
         images = ((GlobalStorage) this.getApplication()).getImages();
         name = new String[images.size()];
-        imageId = new Integer[images.size()];
+        imageId = new Uri[images.size()];
         for (int i = 0; i < images.size(); i++){
             name[i] = images.get(i).getName();
             imageId[i] = images.get(i).getId();
@@ -40,6 +49,7 @@ public class Database extends AppCompatActivity {
         super.onStart();
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +61,13 @@ public class Database extends AppCompatActivity {
                 CustomList(Database.this, name, imageId);
         list=(ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
+        Button btn = (Button) findViewById(R.id.addButton);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestRead();
+            }
+        });
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -60,6 +77,7 @@ public class Database extends AppCompatActivity {
 
             }
         });
+
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
 
             @Override
@@ -77,11 +95,9 @@ public class Database extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
 
                                 Image image = ((GlobalStorage) getApplication()).getImage(imageId[pos]);
-
+                                updateViewHack();
                                 ((GlobalStorage) getApplication()).removeImage(image);
-                                list.requestLayout();
-                                finish();
-                                startActivity(getIntent());
+
                                 Toast.makeText(Database.this, "You deleted " +name[+ pos] +" from the database", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -110,6 +126,56 @@ public class Database extends AppCompatActivity {
 
 
 
+    }
+    public void updateViewHack(){
+        list.requestLayout();
+        finish();
+        startActivity(getIntent());
+    }
+    //For API 23 og opp må man be om tilgang
+    public void requestRead() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        } else {
+            loadUpImage();
+        }
+    }
+    public void loadUpImage(){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, 1);
+    }
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                Uri uri = Uri.parse(data.toUri(Intent.URI_ALLOW_UNSAFE));
+                System.out.println();
+                //final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+               // final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                EditText mEdit   = (EditText)findViewById(R.id.nameText);
+                String name = mEdit.getText().toString();
+                Image img = new Image(name, uri);
+                System.out.println("URI: " + uri);
+               ((GlobalStorage) getApplication()).addImage(img);
+                updateViewHack();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(Database.this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(Database.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+        }
     }
 
 

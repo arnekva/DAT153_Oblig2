@@ -3,6 +3,7 @@ package com.example.oblig1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.Settings;
 import android.view.View;
 
@@ -37,14 +38,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initImages(){
-        Image img1 = new Image("Amy", R.drawable.amy);
-        Image img2 = new Image("Jake", R.drawable.jake);
-        Image img3 = new Image("Hitchcock", R.drawable.hitchcock);
-        Image img4 = new Image("Boyle", R.drawable.boyle);
+        Image img1 = new Image("Amy", Uri.parse("android.resource://com.example.oblig1/"+R.drawable.amy));
+        Image img2 = new Image("Jake", Uri.parse("android.resource://com.example.oblig1/"+R.drawable.jake));
+        Image img3 = new Image("Hitchcock", Uri.parse("android.resource://com.example.oblig1/"+R.drawable.hitchcock));
+        Image img4 = new Image("Boyle", Uri.parse("android.resource://com.example.oblig1/"+R.drawable.boyle));
         ((GlobalStorage) this.getApplication()).addImage(img1);
         ((GlobalStorage) this.getApplication()).addImage(img2);
         ((GlobalStorage) this.getApplication()).addImage(img3);
         ((GlobalStorage) this.getApplication()).addImage(img4);
+
+        for(int i = 0;i<((GlobalStorage) this.getApplication()).getImages().size();i++){
+            System.out.println(((GlobalStorage) this.getApplication()).getImages().get(i));
+        }
 
     }
 }
