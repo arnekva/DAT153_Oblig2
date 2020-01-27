@@ -63,20 +63,7 @@ public class Database extends AppCompatActivity {
                 CustomList(Database.this, name, imageId);
         list=(ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
-        addToDb = findViewById(R.id.addBtn);
-        addToDb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addImageToDB();
-            }
-        });
-        Button btn = (Button) findViewById(R.id.addButton);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestRead();
-            }
-        });
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -118,91 +105,21 @@ public class Database extends AppCompatActivity {
 
                     }
                 });
-
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
-
-
-
-
-
                 return true;
             }
 
         });
-
-
-
-
     }
     public void updateViewHack(){
         list.requestLayout();
+        list.invalidateViews();
         finish();
         startActivity(getIntent());
     }
     //For API 23 og opp må man be om tilgang
-    public void requestRead() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-        } else {
-            loadUpImage();
-        }
-    }
-    public void loadUpImage(){
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, 1);
-    }
-    @Override
-    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
-        super.onActivityResult(reqCode, resultCode, data);
-
-
-        if (resultCode == RESULT_OK) {
-            try {
-                final Uri imageUri = data.getData();
-                uploadImageUri = Uri.parse(data.toUri(Intent.URI_ALLOW_UNSAFE));
-                //final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-               // final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(Database.this, "Something went wrong", Toast.LENGTH_LONG).show();
-            }
-
-        }else {
-            Toast.makeText(Database.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void addImageToDB(){
-        EditText mEdit   = (EditText)findViewById(R.id.nameText);
-
-        if(uploadImageUri!= null && !mEdit.getText().toString().trim().isEmpty()) {
-
-            String name = mEdit.getText().toString();
-            System.out.println("X"+name+"X");
-            toBeUploaded = new Image(name, uploadImageUri);
-            System.out.println("URI: " + uploadImageUri);
-            ((GlobalStorage) getApplication()).addImage(toBeUploaded);
-            updateViewHack();
-            toBeUploaded = null;
-
-            Toast.makeText(Database.this, "Image added to database", Toast.LENGTH_LONG).show();
-        }else{
-            if(mEdit.getText().toString().trim().isEmpty()){
-                Toast.makeText(Database.this, "You need to enter the name of the person", Toast.LENGTH_LONG).show();
-            }else {
-                Toast.makeText(Database.this, "You need to upload an image first", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 
 
 }

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.oblig1">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".GlobalStorage"
         android:allowBackup="true"
@@ -11,9 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".AddImages"
+            android:label="@string/title_activity_add_images"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Database"
             android:label="@string/title_activity_database"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TestAct"
             android:label="@string/title_activity_test"

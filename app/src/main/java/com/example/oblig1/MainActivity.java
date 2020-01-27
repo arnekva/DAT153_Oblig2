@@ -37,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+    public void gotoAdd(View v){
+        Intent intent = new Intent(this, AddImages.class);
+
+        startActivity(intent);
+    }
 
     private void initImages(){
         Image img1 = new Image("Amy", Uri.parse("android.resource://com.example.oblig1/"+R.drawable.amy));
