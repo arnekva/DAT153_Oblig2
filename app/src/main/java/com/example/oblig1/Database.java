@@ -21,6 +21,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -51,7 +55,11 @@ public class Database extends AppCompatActivity {
         super.onStart();
 
     }
+    public void gotoAdd(View v){
+        Intent intent = new Intent(this, AddImages.class);
 
+        startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +67,16 @@ public class Database extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         splitListToTable();
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoAdd(view);
+
+            }
+        });
+
+
         final CustomList adapter = new
                 CustomList(Database.this, name, imageId);
         list=(ListView)findViewById(R.id.list);
@@ -118,8 +136,4 @@ public class Database extends AppCompatActivity {
         finish();
         startActivity(getIntent());
     }
-    //For API 23 og opp må man be om tilgang
-
-
-
 }
