@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="175dp"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="425dp"
         android:text="Who dis?" />
 
     <EditText
@@ -44,17 +44,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="110dp"
-        android:layout_marginTop="580dp"
+        android:layout_marginTop="480dp"
+        android:hint="Enter name"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/submitAnswer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="150dp"
-        android:layout_marginTop="630dp"
+        android:layout_marginTop="560dp"
         android:text="Button" />
 
     <TextView
@@ -63,6 +63,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="170dp"
         android:layout_marginTop="100dp"
-        android:text="TextView" />
+        android:text="0/0" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
