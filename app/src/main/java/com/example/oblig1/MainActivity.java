@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TestAct.class);
 
         startActivity(intent);
+        finish();
     }
     public void gotoDB(View view) {
         // Do something in response to button

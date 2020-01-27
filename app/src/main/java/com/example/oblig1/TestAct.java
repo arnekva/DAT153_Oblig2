@@ -26,6 +26,7 @@ public class TestAct extends AppCompatActivity {
     private TextView sb_score;
     private ImageView imgView;
     private String correctAnswer;
+    private ArrayList<Image> quiz;
     int score = 0;
     int total = 0;
     @Override
@@ -71,8 +72,9 @@ public class TestAct extends AppCompatActivity {
     }
     public void setupList(){
         Random r = new Random();
-        ArrayList<Image> quiz = ((GlobalStorage) this.getApplication()).getImages();
+        quiz = ((GlobalStorage) this.getApplication()).getImages();
         int next = r.nextInt(quiz.size());
+        quiz.remove(next); //Probably?
         imgView.setImageURI(quiz.get(next).getId());
         correctAnswer = quiz.get(next).getName();
     }

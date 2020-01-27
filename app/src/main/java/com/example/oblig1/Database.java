@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -31,6 +30,9 @@ public class Database extends AppCompatActivity {
     ArrayList<Image> images;
     String[] name;
     Uri[] imageId;
+    Image toBeUploaded;
+    Button addToDb;
+    Uri uploadImageUri;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
     private void splitListToTable(){
@@ -61,6 +63,13 @@ public class Database extends AppCompatActivity {
                 CustomList(Database.this, name, imageId);
         list=(ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
+        addToDb = findViewById(R.id.addBtn);
+        addToDb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addImageToDB();
+            }
+        });
         Button btn = (Button) findViewById(R.id.addButton);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,16 +167,10 @@ public class Database extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
-                Uri uri = Uri.parse(data.toUri(Intent.URI_ALLOW_UNSAFE));
-                System.out.println();
+                uploadImageUri = Uri.parse(data.toUri(Intent.URI_ALLOW_UNSAFE));
                 //final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                // final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                EditText mEdit   = (EditText)findViewById(R.id.nameText);
-                String name = mEdit.getText().toString();
-                Image img = new Image(name, uri);
-                System.out.println("URI: " + uri);
-               ((GlobalStorage) getApplication()).addImage(img);
-                updateViewHack();
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(Database.this, "Something went wrong", Toast.LENGTH_LONG).show();
@@ -178,7 +181,28 @@ public class Database extends AppCompatActivity {
         }
     }
 
+    public void addImageToDB(){
+        EditText mEdit   = (EditText)findViewById(R.id.nameText);
 
+        if(uploadImageUri!= null && !mEdit.getText().toString().trim().isEmpty()) {
+
+            String name = mEdit.getText().toString();
+            System.out.println("X"+name+"X");
+            toBeUploaded = new Image(name, uploadImageUri);
+            System.out.println("URI: " + uploadImageUri);
+            ((GlobalStorage) getApplication()).addImage(toBeUploaded);
+            updateViewHack();
+            toBeUploaded = null;
+
+            Toast.makeText(Database.this, "Image added to database", Toast.LENGTH_LONG).show();
+        }else{
+            if(mEdit.getText().toString().trim().isEmpty()){
+                Toast.makeText(Database.this, "You need to enter the name of the person", Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(Database.this, "You need to upload an image first", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
 
 }

@@ -42,14 +42,22 @@
         android:layout_marginLeft="220dp"
         android:layout_marginTop="80dp"
         android:onClick="loadUpImage"
-        android:text="Add Image" />
+        android:text="Upload" />
 
     <EditText
         android:id="@+id/nameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="80dp"
         android:ems="10"
         android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="80dp"
+        android:text="Add to DB" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
