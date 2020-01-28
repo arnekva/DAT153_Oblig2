@@ -1,15 +1,18 @@
 package com.example.oblig1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.View;
 
 import android.os.Bundle;
 import android.widget.EditText;
-
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,28 +22,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initImages();
+
+
     }
+
 
     public MainActivity() {
     }
 
     public void startQuiz(View view) {
-        // Do something in response to button
         Intent intent = new Intent(this, TestAct.class);
-
         startActivity(intent);
-        finish();
     }
     public void gotoDB(View view) {
-        // Do something in response to button
         Intent intent = new Intent(this, Database.class);
-
         startActivity(intent);
     }
     public void gotoAdd(View v){
         Intent intent = new Intent(this, AddImages.class);
-
         startActivity(intent);
+
     }
 
     private void initImages(){

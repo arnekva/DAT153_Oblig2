@@ -5,4 +5,5 @@
     <string name="start_kviss">Start Kviss</string>
     <string name="title_activity_database">Database</string>
     <string name="title_activity_add_images">AddImages</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

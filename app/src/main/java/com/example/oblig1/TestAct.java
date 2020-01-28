@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
@@ -43,10 +43,10 @@ public class TestAct extends AppCompatActivity {
         sb_submit = findViewById(R.id.submitAnswer);
 
         initView();
+        shuffleList();
     }
 
     private void initView(){
-        setupList();
         sb_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +73,7 @@ public class TestAct extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Correct!",Toast.LENGTH_SHORT).show();
             sb_score.setText(score + "/" + total);
             sb_ans.getText().clear();
-            setupList();
+            getNext();
 
         }else {
             total++;
@@ -82,18 +82,29 @@ public class TestAct extends AppCompatActivity {
             sb_ans.getText().clear();
         }
     }
-    public void setupList(){
-        Random r = new Random();
+    public void shuffleList(){
         quiz = ((GlobalStorage) this.getApplication()).getImages();
-        int next = r.nextInt(quiz.size());
-        imgView.setImageURI(quiz.get(next).getId());
-        correctAnswer = quiz.get(next).getName();
-        quiz.remove(next); //Probably?
+        Collections.shuffle(quiz);
+        getNext();
     }
-    public void updateImage(){
-
+    private int counter = 0;
+    public void getNext(){
+        if (counter < quiz.size()) {
+            imgView.setImageURI(quiz.get(counter).getId());
+            correctAnswer = quiz.get(counter).getName();
+            counter++;
+        }
+        else if(counter == quiz.size()){
+            finish();
+            Toast.makeText(getApplicationContext(),"You finished with a score of " + score +" out of " + total,Toast.LENGTH_SHORT).show();
+        }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     public boolean isCorrect(String a, String c){
         return a.trim().equalsIgnoreCase(c.trim());

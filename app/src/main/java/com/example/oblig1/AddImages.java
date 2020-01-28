@@ -3,6 +3,7 @@ package com.example.oblig1;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,15 +14,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AddImages extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     Image toBeUploaded;
     Button addToDb;
     Uri uploadImageUri;
@@ -38,6 +48,15 @@ public class AddImages extends AppCompatActivity {
                 requestRead();
             }
         });
+
+        Button btn2 = (Button) findViewById(R.id.TakePhotoBtn);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Toast.makeText(AddImages.this, "Nah", Toast.LENGTH_LONG).show();
+            }
+        });
+
         addToDb = findViewById(R.id.addBtn);
         addToDb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +84,7 @@ public class AddImages extends AppCompatActivity {
             loadUpImage();
         }
     }
+
     public void loadUpImage(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
@@ -74,14 +94,13 @@ public class AddImages extends AppCompatActivity {
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
-
+        ImageView iw = findViewById(R.id.addImageViewer);
 
         if (resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
 
                 uploadImageUri = Uri.parse(data.toUri(Intent.URI_ALLOW_UNSAFE));
-                ImageView iw = findViewById(R.id.addImageViewer);
                 iw.setImageURI(uploadImageUri);
                 //final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 // final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
@@ -93,6 +112,12 @@ public class AddImages extends AppCompatActivity {
 
         }else {
             Toast.makeText(AddImages.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+        }
+        if (resultCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            iw.setImageBitmap(imageBitmap);
+
         }
     }
 
@@ -116,6 +141,7 @@ public class AddImages extends AppCompatActivity {
                 Toast.makeText(AddImages.this, "You need to upload an image first", Toast.LENGTH_LONG).show();
             }
         }
+
     }
 
     public void updateViewHack(){
