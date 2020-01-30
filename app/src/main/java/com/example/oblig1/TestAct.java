@@ -95,6 +95,7 @@ public class TestAct extends AppCompatActivity {
             counter++;
         }
         else if(counter == quiz.size()){
+            //or counter = 0;
             finish();
             Toast.makeText(getApplicationContext(),"You finished with a score of " + score +" out of " + total,Toast.LENGTH_SHORT).show();
         }
@@ -107,7 +108,6 @@ public class TestAct extends AppCompatActivity {
     }
 
     public boolean isCorrect(String a, String c){
-        return a.trim().equalsIgnoreCase(c.trim());
+        return a.equalsIgnoreCase(c);
     }
-
 }
