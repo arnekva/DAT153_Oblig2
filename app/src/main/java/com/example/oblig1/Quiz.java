@@ -2,9 +2,6 @@ package com.example.oblig1;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,9 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Collections;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Random;
-
 public class Quiz extends AppCompatActivity {
 
     private EditText sb_ans;
@@ -29,8 +23,8 @@ public class Quiz extends AppCompatActivity {
     private ImageView imgView;
     private String correctAnswer;
     private ArrayList<Image> quiz;
-    int score = 0;
-    int total = 0;
+    private int score = 0;
+    private int total = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +51,7 @@ public class Quiz extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_GO || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                if (actionId == EditorInfo.IME_ACTION_GO || (actionId == EditorInfo.IME_ACTION_DONE) || event.getAction() == KeyEvent.KEYCODE_ENTER || event.getAction() == KeyEvent.ACTION_DOWN) {
                     //Perform your Actions here.
                     checkAnswer();
                 }
@@ -67,53 +61,78 @@ public class Quiz extends AppCompatActivity {
     }
 
     /**
-     * Checks whether the given answer is correct. Creates an shows a toast for either situation, and updates the scores
+     * Checks whether the given answer is correct. Creates and shows a toast for either situation, and updates the scores
      */
     public void checkAnswer(){
         if (isCorrect(sb_ans.getText().toString(), correctAnswer)){
             score++;
-            total++;
             Toast.makeText(getApplicationContext(),"Correct!",Toast.LENGTH_SHORT).show();
-            sb_score.setText(score + "/" + total);
-            sb_ans.getText().clear();
             getNext();
-
         }else {
-            total++;
-            sb_score.setText(score + "/" + total);
             Toast.makeText(getApplicationContext(), "Incorrect! \nThe correct answer is: " + correctAnswer, Toast.LENGTH_LONG).show();
-            sb_ans.getText().clear();
         }
+        updateScore();
     }
 
+    /**
+     * Updates the score and clears the input field
+     */
+    public void updateScore(){
+        total++;
+        sb_score.setText("Score: " + score + "/" + total);
+        sb_ans.getText().clear();
+    }
     /**
      * Shuffles the list at the beginning of the quiz to get a new order each time
      */
     public void shuffleList(){
         quiz = ((GlobalStorage) this.getApplication()).getImages();
         Collections.shuffle(quiz);
+
         getNext();
     }
     private int counter = 0;
+
+    /**
+     * Gets the next image from the ArrayList. If the end of the list is reached, the Activity is finished and Toast is created with final score
+     */
     public void getNext(){
         if (counter < quiz.size()) {
-            imgView.setImageURI(quiz.get(counter).getId());
+            imgView.setImageBitmap(quiz.get(counter).getBitmap());
             correctAnswer = quiz.get(counter).getName();
             counter++;
+            //The code under will make the input field go back in focus
+            sb_ans.post(new Runnable() {
+                @Override
+                public void run() {
+                    sb_ans.requestFocus();
+                }
+            });
         }
+        //This way we avoid having images repeated in a row.
         else if(counter == quiz.size()){
-            //or counter = 0;
-            finish();
-            Toast.makeText(getApplicationContext(),"You finished with a score of " + score +" out of " + total,Toast.LENGTH_SHORT).show();
-        }
+            shuffleList();
+            counter = 0;
+            }
+    }
+    public void exitAndToast(){
+    finish();
+    Toast.makeText(getApplicationContext(),"You finished with a score of " + score +" out of " + total,Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+        exitAndToast();
     }
 
+    /**
+     * Checks whether two strings are equal, not case sensitive
+     * @param a String one
+     * @param c String two
+     * @return True if they match, false if not
+     */
     public boolean isCorrect(String a, String c){
         return a.equalsIgnoreCase(c);
     }

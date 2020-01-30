@@ -1,22 +1,17 @@
 package com.example.oblig1;
 
 import android.Manifest;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -24,23 +19,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class AddImages extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    Image toBeUploaded;
-    Button addToDb;
-    Uri uploadImageUri;
+    private static final int REQUEST_UPLOAD_IMAGE = 2;
+    private Image toBeUploaded;
+    private Button addToDb;
+    private Bitmap uploadBitmap;
+    private ImageView iw;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_images);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        iw = findViewById(R.id.addImageViewer);
         Button btn = (Button) findViewById(R.id.addButton);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +47,7 @@ public class AddImages extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Toast.makeText(AddImages.this, "Nah", Toast.LENGTH_LONG).show();
+               dispatchTakePictureIntent();
             }
         });
 
@@ -92,34 +86,32 @@ public class AddImages extends AppCompatActivity {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
 
-        startActivityForResult(photoPickerIntent, 1);
+        startActivityForResult(photoPickerIntent, REQUEST_UPLOAD_IMAGE);
     }
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
-        ImageView iw = findViewById(R.id.addImageViewer);
-
-        if (resultCode == RESULT_OK) {
-            try {
-                final Uri imageUri = data.getData();
-
-                uploadImageUri = Uri.parse(data.toUri(Intent.URI_ALLOW_UNSAFE));
-                iw.setImageURI(uploadImageUri);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(AddImages.this, "Something went wrong", Toast.LENGTH_LONG).show();
-            }
-
-        }else {
-            Toast.makeText(AddImages.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
-        }
-        if (resultCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (reqCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+
             iw.setImageBitmap(imageBitmap);
-
-
+            uploadBitmap = imageBitmap;
         }
+    if(resultCode == RESULT_OK && reqCode == REQUEST_UPLOAD_IMAGE){
+        try {
+            final Uri imageUri = data.getData();
+            Bitmap bitmapImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+
+            //uploadImageUri = Uri.parse(data(Intent.URI_ALLOW_UNSAFE));
+            iw.setImageBitmap(bitmapImg);
+            uploadBitmap = bitmapImg;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(AddImages.this, "Something went wrong", Toast.LENGTH_LONG).show();
+        }
+    }
+
     }
 
     /**
@@ -129,12 +121,10 @@ public class AddImages extends AppCompatActivity {
     public void addImageToDB(){
         EditText mEdit   = (EditText)findViewById(R.id.nameText);
 
-        if(uploadImageUri!= null && !mEdit.getText().toString().trim().isEmpty()) {
+        if(uploadBitmap!= null && !mEdit.getText().toString().trim().isEmpty()) {
 
             String name = mEdit.getText().toString();
-            System.out.println("X"+name+"X");
-            toBeUploaded = new Image(name, uploadImageUri);
-            System.out.println("URI: " + uploadImageUri);
+            toBeUploaded = new Image(name, uploadBitmap);
             ((GlobalStorage) getApplication()).addImage(toBeUploaded);
             toBeUploaded = null;
             finish();
@@ -150,10 +140,14 @@ public class AddImages extends AppCompatActivity {
         }
 
     }
+    //TODO: CAMERA
 
-    public void updateViewHack(){
-        finish();
-        startActivity(getIntent());
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
+
 
 }

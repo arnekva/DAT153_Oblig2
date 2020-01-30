@@ -1,7 +1,7 @@
 package com.example.oblig1;
 
 import android.app.Application;
-import android.net.Uri;
+import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 
@@ -24,9 +24,9 @@ public class GlobalStorage extends Application {
      * @param id The URI of the requested image
      * @return an image object
      */
-    public Image getImage(Uri id){
+    public Image getImage(Bitmap id){
         for(int i = 0;i<images.size();i++){
-            if(images.get(i).getId() == id){
+            if(images.get(i).getBitmap() == id){
                 return images.get(i);
             }
         }

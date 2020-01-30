@@ -1,14 +1,14 @@
 package com.example.oblig1;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
 
 public class Image {
     private String name;
-    private Uri id;
+    private Bitmap bitmap;
 
-    public Image(String n, Uri i){
+    public Image(String n, Bitmap i){
         this.name = n;
-        this.id = i;
+        this.bitmap = i;
     }
 
     public String getName() {
@@ -19,11 +19,11 @@ public class Image {
         this.name = name;
     }
 
-    public Uri getId() {
-        return id;
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 
-    public void setId(Uri id) {
-        this.id = id;
+    public void setBitmap(Bitmap id) {
+        this.bitmap = id;
     }
 }

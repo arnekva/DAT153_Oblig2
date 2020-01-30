@@ -35,9 +35,10 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="175dp"
+        android:layout_marginLeft="150dp"
         android:layout_marginTop="425dp"
-        android:text="Who dis?" />
+        android:text="Who dis?"
+        android:textSize="25sp" />
 
     <EditText
         android:id="@+id/submitText"
@@ -55,14 +56,15 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="150dp"
         android:layout_marginTop="560dp"
-        android:text="Button" />
+        android:text="Submit" />
 
     <TextView
         android:id="@+id/tv_scoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="170dp"
+        android:layout_marginLeft="145dp"
         android:layout_marginTop="100dp"
-        android:text="0/0" />
+        android:text="Score: 0/0"
+        android:textSize="25sp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
