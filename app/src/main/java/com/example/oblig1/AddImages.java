@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class AddImages extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -28,6 +30,12 @@ public class AddImages extends AppCompatActivity {
     private Button addToDb;
     private Bitmap uploadBitmap;
     private ImageView iw;
+
+    @Override
+    protected void onStart() {
+        overridePendingTransition(0,0);
+        super.onStart();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +43,7 @@ public class AddImages extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         iw = findViewById(R.id.addImageViewer);
-        Button btn = (Button) findViewById(R.id.addButton);
+        Button btn = findViewById(R.id.addButton);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,11 +51,24 @@ public class AddImages extends AppCompatActivity {
             }
         });
 
-        Button btn2 = (Button) findViewById(R.id.TakePhotoBtn);
+        Button btn2 = findViewById(R.id.TakePhotoBtn);
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                dispatchTakePictureIntent();
+            }
+        });
+        FloatingActionButton fab = findViewById(R.id.fabadd);
+        Intent intent = getIntent();
+        String checkFlag= intent.getStringExtra("flag");
+
+        if(!"DB".equals(checkFlag)){
+            fab.hide();
+        }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goBackToDB();
             }
         });
 
@@ -58,7 +79,7 @@ public class AddImages extends AppCompatActivity {
                 addImageToDB();
             }
         });
-        btn = (Button) findViewById(R.id.addButton);
+        btn = findViewById(R.id.addButton);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +99,11 @@ public class AddImages extends AppCompatActivity {
             loadUpImage();
         }
     }
-
+    public void goBackToDB(){
+        Intent intent = new Intent(this, Database.class);
+        intent.putExtra("flag", "return");
+        startActivity(intent);
+    }
     /**
      * Loads an image from the device gallery
      */

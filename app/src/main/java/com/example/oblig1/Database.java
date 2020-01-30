@@ -3,6 +3,9 @@ package com.example.oblig1;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
@@ -43,6 +46,7 @@ public class Database extends AppCompatActivity {
     }
     public void gotoAdd(View v){
         Intent intent = new Intent(this, AddImages.class);
+        intent.putExtra("flag", "DB");
         startActivity(intent);
     }
     @Override

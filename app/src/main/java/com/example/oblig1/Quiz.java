@@ -75,7 +75,7 @@ public class Quiz extends AppCompatActivity {
     }
 
     /**
-     * Updates the score and clears the input field
+     * Updates the score and clears the input field. Increments total amount of tries.
      */
     public void updateScore(){
         total++;

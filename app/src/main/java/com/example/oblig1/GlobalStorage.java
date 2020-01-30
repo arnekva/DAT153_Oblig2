@@ -20,7 +20,7 @@ public class GlobalStorage extends Application {
     }
 
     /**
-     *
+     * Gets a specified image from the list
      * @param id The URI of the requested image
      * @return an image object
      */
@@ -31,5 +31,12 @@ public class GlobalStorage extends Application {
             }
         }
         return null;
+    }
+
+    /**
+     * Remove all images from list
+     */
+    public void YeetAll(){
+        images.removeAll(images);
     }
 }

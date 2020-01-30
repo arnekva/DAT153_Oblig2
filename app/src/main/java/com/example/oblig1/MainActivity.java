@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initImages(){
+        ((GlobalStorage) this.getApplication()).YeetAll();
         Bitmap bm_amy = BitmapFactory.decodeResource(getResources(), R.drawable.amy);
         Bitmap bm_jake = BitmapFactory.decodeResource(getResources(), R.drawable.jake);
         Bitmap bm_hitchcock = BitmapFactory.decodeResource(getResources(), R.drawable.hitchcock);

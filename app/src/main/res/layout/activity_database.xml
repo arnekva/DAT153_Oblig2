@@ -41,5 +41,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:backgroundTint="@color/fab_dark"
+        app:fabCustomSize="56dp"
+        app:maxImageSize="40dp"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@color/fab_white" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
