@@ -1,4 +1,4 @@
 # DAT153 Oblig 1
 
 ## Gruppemedlemmer
-//TODO:
+Arne Kvaleberg, Sivert Lunde

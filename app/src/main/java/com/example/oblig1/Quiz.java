@@ -111,8 +111,8 @@ public class Quiz extends AppCompatActivity {
         }
         //This way we avoid having images repeated in a row.
         else if(counter == quiz.size()){
-            shuffleList();
             counter = 0;
+            shuffleList();
             }
     }
     private void exitAndToast(){

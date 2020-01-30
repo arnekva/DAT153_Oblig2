@@ -35,9 +35,9 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="150dp"
+        android:layout_marginLeft="135dp"
         android:layout_marginTop="425dp"
-        android:text="Who dis?"
+        android:text="Who is this?"
         android:textSize="25sp" />
 
     <EditText

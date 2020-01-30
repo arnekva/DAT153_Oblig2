@@ -155,7 +155,6 @@ public class AddImages extends AppCompatActivity {
                 Toast.makeText(AddImages.this, "You need to upload an image first", Toast.LENGTH_LONG).show();
             }
         }
-
     }
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
