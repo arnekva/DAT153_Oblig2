@@ -63,7 +63,7 @@ public class Quiz extends AppCompatActivity {
     /**
      * Checks whether the given answer is correct. Creates and shows a toast for either situation, and updates the scores
      */
-    public void checkAnswer(){
+    private void checkAnswer(){
         if (isCorrect(sb_ans.getText().toString(), correctAnswer)){
             score++;
             Toast.makeText(getApplicationContext(),"Correct!",Toast.LENGTH_SHORT).show();
@@ -77,7 +77,7 @@ public class Quiz extends AppCompatActivity {
     /**
      * Updates the score and clears the input field. Increments total amount of tries.
      */
-    public void updateScore(){
+    private void updateScore(){
         total++;
         sb_score.setText("Score: " + score + "/" + total);
         sb_ans.getText().clear();
@@ -85,7 +85,7 @@ public class Quiz extends AppCompatActivity {
     /**
      * Shuffles the list at the beginning of the quiz to get a new order each time
      */
-    public void shuffleList(){
+    private void shuffleList(){
         quiz = ((GlobalStorage) this.getApplication()).getImages();
         Collections.shuffle(quiz);
 
@@ -96,7 +96,7 @@ public class Quiz extends AppCompatActivity {
     /**
      * Gets the next image from the ArrayList. If the end of the list is reached, the Activity is finished and Toast is created with final score
      */
-    public void getNext(){
+    private void getNext(){
         if (counter < quiz.size()) {
             imgView.setImageBitmap(quiz.get(counter).getBitmap());
             correctAnswer = quiz.get(counter).getName();
@@ -115,7 +115,7 @@ public class Quiz extends AppCompatActivity {
             counter = 0;
             }
     }
-    public void exitAndToast(){
+    private void exitAndToast(){
     finish();
     Toast.makeText(getApplicationContext(),"You finished with a score of " + score +" out of " + total,Toast.LENGTH_SHORT).show();
 
@@ -133,7 +133,7 @@ public class Quiz extends AppCompatActivity {
      * @param c String two
      * @return True if they match, false if not
      */
-    public boolean isCorrect(String a, String c){
+    private boolean isCorrect(String a, String c){
         return a.equalsIgnoreCase(c);
     }
 }

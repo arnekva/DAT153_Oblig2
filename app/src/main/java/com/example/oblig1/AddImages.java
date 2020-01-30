@@ -30,6 +30,7 @@ public class AddImages extends AppCompatActivity {
     private Button addToDb;
     private Bitmap uploadBitmap;
     private ImageView iw;
+    EditText mEdit;
 
     @Override
     protected void onStart() {
@@ -43,16 +44,16 @@ public class AddImages extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         iw = findViewById(R.id.addImageViewer);
-        Button btn = findViewById(R.id.addButton);
-        btn.setOnClickListener(new View.OnClickListener() {
+        Button uploadBtn = findViewById(R.id.addButton);
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 requestRead();
             }
         });
 
-        Button btn2 = findViewById(R.id.TakePhotoBtn);
-        btn2.setOnClickListener(new View.OnClickListener() {
+        Button cameraBtn = findViewById(R.id.TakePhotoBtn);
+        cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                dispatchTakePictureIntent();
@@ -79,15 +80,14 @@ public class AddImages extends AppCompatActivity {
                 addImageToDB();
             }
         });
-        btn = findViewById(R.id.addButton);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestRead();
-            }
-        });
+
     }
-    public void requestRead() {
+
+    /**
+     * Requests access to gallery.
+     * On newer versions of Android, the app must request access to gallery from the system. If granted, it will load selected image
+     */
+    private void requestRead() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -99,7 +99,7 @@ public class AddImages extends AppCompatActivity {
             loadUpImage();
         }
     }
-    public void goBackToDB(){
+    private void goBackToDB(){
         Intent intent = new Intent(this, Database.class);
         intent.putExtra("flag", "return");
         startActivity(intent);
@@ -107,10 +107,9 @@ public class AddImages extends AppCompatActivity {
     /**
      * Loads an image from the device gallery
      */
-    public void loadUpImage(){
+    private void loadUpImage(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
-
         startActivityForResult(photoPickerIntent, REQUEST_UPLOAD_IMAGE);
     }
     @Override
@@ -119,7 +118,6 @@ public class AddImages extends AppCompatActivity {
         if (reqCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-
             iw.setImageBitmap(imageBitmap);
             uploadBitmap = imageBitmap;
         }
@@ -127,8 +125,6 @@ public class AddImages extends AppCompatActivity {
         try {
             final Uri imageUri = data.getData();
             Bitmap bitmapImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-
-            //uploadImageUri = Uri.parse(data(Intent.URI_ALLOW_UNSAFE));
             iw.setImageBitmap(bitmapImg);
             uploadBitmap = bitmapImg;
         } catch (Exception e) {
@@ -136,18 +132,14 @@ public class AddImages extends AppCompatActivity {
             Toast.makeText(AddImages.this, "Something went wrong", Toast.LENGTH_LONG).show();
         }
     }
-
     }
-
     /**
      * Adds an image to the app database.
      * Checks whether the image file or name text is empty before adding.
      */
-    public void addImageToDB(){
-        EditText mEdit   = (EditText)findViewById(R.id.nameText);
-
+    private void addImageToDB(){
+        mEdit = findViewById(R.id.nameText);
         if(uploadBitmap!= null && !mEdit.getText().toString().trim().isEmpty()) {
-
             String name = mEdit.getText().toString();
             toBeUploaded = new Image(name, uploadBitmap);
             ((GlobalStorage) getApplication()).addImage(toBeUploaded);
@@ -165,14 +157,10 @@ public class AddImages extends AppCompatActivity {
         }
 
     }
-    //TODO: CAMERA
-
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
-
-
 }

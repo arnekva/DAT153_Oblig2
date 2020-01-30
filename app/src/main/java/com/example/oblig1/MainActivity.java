@@ -18,15 +18,15 @@ public class MainActivity extends AppCompatActivity {
         initImages();
     }
 
-    public void startQuiz(View view) {
+    private void startQuiz(View view) {
         Intent intent = new Intent(this, Quiz.class);
         startActivity(intent);
     }
-    public void gotoDB(View view) {
+    private void gotoDB(View view) {
         Intent intent = new Intent(this, Database.class);
         startActivity(intent);
     }
-    public void gotoAdd(View v){
+    private void gotoAdd(View v){
         Intent intent = new Intent(this, AddImages.class);
         startActivity(intent);
     }
