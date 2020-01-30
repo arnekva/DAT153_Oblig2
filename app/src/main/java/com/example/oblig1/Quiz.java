@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
-public class TestAct extends AppCompatActivity {
+public class Quiz extends AppCompatActivity {
 
     private EditText sb_ans;
     private Button sb_submit;
@@ -64,8 +64,11 @@ public class TestAct extends AppCompatActivity {
                 return handled;
             }
         });
-
     }
+
+    /**
+     * Checks whether the given answer is correct. Creates an shows a toast for either situation, and updates the scores
+     */
     public void checkAnswer(){
         if (isCorrect(sb_ans.getText().toString(), correctAnswer)){
             score++;
@@ -82,6 +85,10 @@ public class TestAct extends AppCompatActivity {
             sb_ans.getText().clear();
         }
     }
+
+    /**
+     * Shuffles the list at the beginning of the quiz to get a new order each time
+     */
     public void shuffleList(){
         quiz = ((GlobalStorage) this.getApplication()).getImages();
         Collections.shuffle(quiz);

@@ -57,7 +57,6 @@ public class Database extends AppCompatActivity {
     }
     public void gotoAdd(View v){
         Intent intent = new Intent(this, AddImages.class);
-
         startActivity(intent);
     }
     @Override

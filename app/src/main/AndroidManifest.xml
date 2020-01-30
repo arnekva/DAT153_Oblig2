@@ -28,7 +28,7 @@
             android:label="@string/title_activity_database"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".TestAct"
+            android:name=".Quiz"
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">

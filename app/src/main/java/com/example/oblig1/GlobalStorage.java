@@ -19,6 +19,11 @@ public class GlobalStorage extends Application {
         return this.images.remove(image);
     }
 
+    /**
+     *
+     * @param id The URI of the requested image
+     * @return an image object
+     */
     public Image getImage(Uri id){
         for(int i = 0;i<images.size();i++){
             if(images.get(i).getId() == id){

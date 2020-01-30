@@ -1,19 +1,12 @@
 package com.example.oblig1;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.view.View;
 
 import android.os.Bundle;
-import android.widget.EditText;
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startQuiz(View view) {
-        Intent intent = new Intent(this, TestAct.class);
+        Intent intent = new Intent(this, Quiz.class);
         startActivity(intent);
     }
     public void gotoDB(View view) {

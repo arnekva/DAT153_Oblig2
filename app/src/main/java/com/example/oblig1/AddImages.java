@@ -85,6 +85,9 @@ public class AddImages extends AppCompatActivity {
         }
     }
 
+    /**
+     * Loads an image from the device gallery
+     */
     public void loadUpImage(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
@@ -102,9 +105,6 @@ public class AddImages extends AppCompatActivity {
 
                 uploadImageUri = Uri.parse(data.toUri(Intent.URI_ALLOW_UNSAFE));
                 iw.setImageURI(uploadImageUri);
-                //final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                // final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(AddImages.this, "Something went wrong", Toast.LENGTH_LONG).show();
@@ -118,9 +118,14 @@ public class AddImages extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             iw.setImageBitmap(imageBitmap);
 
+
         }
     }
 
+    /**
+     * Adds an image to the app database.
+     * Checks whether the image file or name text is empty before adding.
+     */
     public void addImageToDB(){
         EditText mEdit   = (EditText)findViewById(R.id.nameText);
 
@@ -132,7 +137,9 @@ public class AddImages extends AppCompatActivity {
             System.out.println("URI: " + uploadImageUri);
             ((GlobalStorage) getApplication()).addImage(toBeUploaded);
             toBeUploaded = null;
-            finish(); //TODO: not finish?
+            finish();
+            Intent intentdb = new Intent(this, Database.class);
+            startActivity(intentdb);
             Toast.makeText(AddImages.this, "Image added to database", Toast.LENGTH_LONG).show();
         }else{
             if(mEdit.getText().toString().trim().isEmpty()){
