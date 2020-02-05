@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
-public class Database extends AppCompatActivity {
+public class Database extends BaseActivity {
 
     private ListView list;
     private ArrayList<Image> images;
@@ -34,6 +34,7 @@ public class Database extends AppCompatActivity {
         intent.putExtra("flag", "DB");
         startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
-public class AddImages extends AppCompatActivity {
+public class AddImages extends BaseActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_UPLOAD_IMAGE = 2;
@@ -162,4 +162,5 @@ public class AddImages extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
+
 }

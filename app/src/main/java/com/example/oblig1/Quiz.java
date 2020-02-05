@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Collections;
 import java.util.ArrayList;
-public class Quiz extends AppCompatActivity {
+public class Quiz extends BaseActivity {
 
     private EditText sb_ans;
     private Button sb_submit;

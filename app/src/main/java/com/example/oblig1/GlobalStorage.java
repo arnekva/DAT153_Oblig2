@@ -39,4 +39,5 @@ public class GlobalStorage extends Application {
     public void YeetAll(){
         images.removeAll(images);
     }
+
 }
