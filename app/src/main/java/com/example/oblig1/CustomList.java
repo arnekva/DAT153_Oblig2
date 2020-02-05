@@ -6,21 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CustomList extends ArrayAdapter<String>{
+import java.util.ArrayList;
 
+public class CustomList extends ArrayAdapter<Image> {
     private final Activity context;
-    private final String[] name;
-    private final Bitmap[] imageId;
 
-    public CustomList(Activity context, String[] name, Bitmap[] imageId) {
-        super(context, R.layout.list_single, name);
+
+    public CustomList(Activity context) {
+    super(context, R.layout.list_single);
         this.context = context;
-        this.name = name;
-        this.imageId = imageId;
-
+        this.addAll(((GlobalStorage) context.getApplication()).getImages());
     }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
@@ -30,13 +29,8 @@ public class CustomList extends ArrayAdapter<String>{
         TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
 
-        txtTitle.setText(name[position]);
-        imageView.setImageBitmap(imageId[position]);
+        txtTitle.setText(this.getItem(position).getName());
+        imageView.setImageBitmap(this.getItem(position).getBitmap());
         return rowView;
-    }
-    public String[] getNames(){
-    return name;}
-    public Bitmap[] getIds(){
-        return imageId;
     }
 }

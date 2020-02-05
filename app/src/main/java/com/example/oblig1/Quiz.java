@@ -41,19 +41,14 @@ public class Quiz extends AppCompatActivity {
     }
 
     private void initView(){
-        sb_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkAnswer();
-            }
-        });
+
         sb_ans.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_GO || (actionId == EditorInfo.IME_ACTION_DONE) || event.getAction() == KeyEvent.KEYCODE_ENTER || event.getAction() == KeyEvent.ACTION_DOWN) {
                     //Perform your Actions here.
-                    checkAnswer();
+                    checkAnswer(null);
                 }
                 return handled;
             }
@@ -63,7 +58,7 @@ public class Quiz extends AppCompatActivity {
     /**
      * Checks whether the given answer is correct. Creates and shows a toast for either situation, and updates the scores
      */
-    private void checkAnswer(){
+    public void checkAnswer(View view){
         if (isCorrect(sb_ans.getText().toString(), correctAnswer)){
             score++;
             Toast.makeText(getApplicationContext(),"Correct!",Toast.LENGTH_SHORT).show();
@@ -110,7 +105,7 @@ public class Quiz extends AppCompatActivity {
             });
         }
         //This way we avoid having images repeated in a row.
-        else if(counter == quiz.size()){
+        else if(counter == quiz.size() && !quiz.isEmpty()){
             counter = 0;
             shuffleList();
             }

@@ -56,7 +56,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="150dp"
         android:layout_marginTop="560dp"
-        android:text="Submit" />
+        android:text="Submit"
+        android:onClick="checkAnswer"/>
 
     <TextView
         android:id="@+id/tv_scoreText"

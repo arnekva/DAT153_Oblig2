@@ -46,4 +46,5 @@
         app:maxImageSize="40dp"
         app:srcCompat="@android:drawable/ic_input_add"
         app:tint="@color/fab_white" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

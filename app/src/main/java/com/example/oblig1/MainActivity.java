@@ -2,12 +2,14 @@ package com.example.oblig1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,13 +17,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initImages();
-    }
+            initImages();
 
+    }
+    @Override
+    protected void onStart() {
+        overridePendingTransition(0,0);
+        super.onStart();
+    }
     public void startQuiz(View view) {
         Intent intent = new Intent(this, Quiz.class);
-        startActivity(intent);
+        if(!((GlobalStorage) this.getApplication()).getImages().isEmpty()){
+            startActivity(intent);
+        }else{
+            Toast.makeText(MainActivity.this, "The database us empty. Try to add some images before you start the quiz", Toast.LENGTH_SHORT).show();
+        }
     }
+
+
     public void gotoDB(View view) {
         Intent intent = new Intent(this, Database.class);
         startActivity(intent);
