@@ -44,7 +44,6 @@ public class Settings extends AppCompatActivity {
         }else{
             Toast.makeText(Settings.this, "Name cannot be empty", Toast.LENGTH_LONG).show();
         }
-
     }
     private String getOwner(){
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("sharedPreferences", 0);
