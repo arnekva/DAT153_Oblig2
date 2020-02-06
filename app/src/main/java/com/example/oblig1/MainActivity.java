@@ -74,7 +74,11 @@ public class MainActivity extends BaseActivity {
         if(owner == null){
             inputName(editor);
         }else{
-            Toast.makeText(getApplicationContext(), "Welcome, " + owner, Toast.LENGTH_LONG).show();
+            String checkFlag= getIntent().getStringExtra("flag");
+            if(!"homebtn".equals(checkFlag)){
+                Toast.makeText(getApplicationContext(), "Welcome, " + Settings.capitalizeWord(owner), Toast.LENGTH_LONG).show();
+            }
+
         }
     }
     public void inputName(Editor e){

@@ -41,8 +41,8 @@ public class AddImages extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_images);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         iw = findViewById(R.id.addImageViewer);
         Button uploadBtn = findViewById(R.id.addButton);
         uploadBtn.setOnClickListener(new View.OnClickListener() {
