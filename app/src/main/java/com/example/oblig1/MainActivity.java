@@ -13,13 +13,12 @@ import android.text.InputType;
 import android.view.View;
 
 import android.os.Bundle;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends BaseActivity {
-    String m_Text = "";
+    private String m_Text = "";
+    private ImageRepository imageRepo; //TODO: Fortsett her. 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

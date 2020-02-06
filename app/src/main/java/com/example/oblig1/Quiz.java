@@ -68,7 +68,11 @@ public class Quiz extends BaseActivity {
         }
         updateScore();
     }
-
+    @Override
+    public void onStop(){
+        super.onStop();
+        exitAndToast();
+    }
     /**
      * Updates the score and clears the input field. Increments total amount of tries.
      */
@@ -114,12 +118,6 @@ public class Quiz extends BaseActivity {
     finish();
     Toast.makeText(getApplicationContext(),"You finished with a score of " + score +" out of " + total,Toast.LENGTH_SHORT).show();
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        exitAndToast();
     }
 
     /**
