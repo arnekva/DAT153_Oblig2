@@ -104,13 +104,12 @@ public class Quiz extends BaseActivity {
 
             @Override
             protected Image doInBackground(Void... voids) {
-                Image image1 = repo.getImageDao().getRandomImage(currentImage.getImageId());
-                if(image1 == null){
-                    return repo.getImageDao().getRandomImage(-1);
+                if(currentImage != null){
+                    Image image1 = repo.getImageDao().getRandomImage(currentImage.getImageId());
+                    return image1 == null ? repo.getImageDao().getRandomImage(-1) : image1;
                 }
-                return image1;
+                return repo.getImageDao().getRandomImage(-1);
             }
-
             @Override
             protected void onPostExecute(Image image) {
                 super.onPostExecute(image);

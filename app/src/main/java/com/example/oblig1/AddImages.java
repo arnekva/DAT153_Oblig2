@@ -86,6 +86,10 @@ public class AddImages extends BaseActivity {
 
 
     }
+
+    /**
+     * Initializes class variables
+     */
     private void initVar(){
         mEdit = findViewById(R.id.nameText);
         iw = findViewById(R.id.addImageViewer);
@@ -141,29 +145,10 @@ public class AddImages extends BaseActivity {
         }
     }
     }
+
     /**
-     * Adds an image to the app database.
-     * Checks whether the image file or name text is empty before adding.
+     * Adds the uploaded image to the database
      */
-    private void addImageToDBOld(){
-
-        if(uploadBitmap!= null && !mEdit.getText().toString().trim().isEmpty()) {
-            String name = mEdit.getText().toString();
-            toBeUploaded = new Image(name, uploadBitmap);
-            ((GlobalStorage) getApplication()).addImage(toBeUploaded);
-            toBeUploaded = null;
-            finish();
-            Intent intentdb = new Intent(this, Database.class);
-            startActivity(intentdb);
-            Toast.makeText(AddImages.this, "Image added to database", Toast.LENGTH_LONG).show();
-        }else{
-            if(mEdit.getText().toString().trim().isEmpty()){
-
-            }else {
-                Toast.makeText(AddImages.this, "You need to upload an image first", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
     private void addImageToDB(){
         final String name = mEdit.getText().toString();
         if (name.trim().isEmpty()) {
@@ -196,6 +181,10 @@ public class AddImages extends BaseActivity {
         SaveImage si = new SaveImage();
         si.execute();
     }
+
+    /**
+     * Starts the camera intent
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {

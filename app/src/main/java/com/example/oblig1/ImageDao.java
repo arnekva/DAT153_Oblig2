@@ -21,9 +21,6 @@ public interface ImageDao {
     @Query("DELETE FROM image WHERE imageId = :id")
     int removeImage(int id);
 
-    @Query("SELECT * FROM image WHERE imageId = :id")
-    Image getImage(int id);
-
     @Query("SELECT * FROM image WHERE imageId NOT LIKE :id ORDER BY RANDOM() LIMIT 1;")
     Image getRandomImage(int id);
 }

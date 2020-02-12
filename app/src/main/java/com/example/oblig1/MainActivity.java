@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.text.InputType;
 import android.view.View;
 
@@ -18,53 +19,47 @@ import android.widget.Toast;
 
 public class MainActivity extends BaseActivity {
     private String m_Text = "";
-    private ImageRepository imageRepo; //TODO: Fortsett her.
+    private ImageRepository repo;
+    private boolean dataBaseIsEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initImages();
+        repo = new ImageRepository(getApplication());
+        dataBaseIsEmpty = false;
+        checkDBSize();
         checkPreferences();
     }
+
     @Override
     protected void onStart() {
         overridePendingTransition(0,0);
         super.onStart();
     }
     public void startQuiz(View view) {
-        Intent intent = new Intent(this, Quiz.class);
-        if(!((GlobalStorage) this.getApplication()).getImages().isEmpty()){
+        if(dataBaseIsEmpty){
+            Toast.makeText(getApplicationContext(), "The database is empty. Try adding some images", Toast.LENGTH_LONG).show();
+        }else {
+            Intent intent = new Intent(this, Quiz.class);
             startActivity(intent);
-        }else{
-            Toast.makeText(MainActivity.this, "The database us empty. Try to add some images before you start the quiz", Toast.LENGTH_SHORT).show();
         }
-    }
+     }
 
     public void gotoDB(View view) {
-        Intent intent = new Intent(this, Database.class);
-        startActivity(intent);
+        if(dataBaseIsEmpty){
+            Toast.makeText(getApplicationContext(), "The database is empty. Try adding some images", Toast.LENGTH_LONG).show();
+        }else {
+            Intent intent = new Intent(this, Database.class);
+            startActivity(intent);
+        }
     }
     public void gotoAdd(View v){
         Intent intent = new Intent(this, AddImages.class);
         startActivity(intent);
     }
 
-    private void initImages(){
-        ((GlobalStorage) this.getApplication()).YeetAll();
-        Bitmap bm_amy = BitmapFactory.decodeResource(getResources(), R.drawable.amy);
-        Bitmap bm_jake = BitmapFactory.decodeResource(getResources(), R.drawable.jake);
-        Bitmap bm_hitchcock = BitmapFactory.decodeResource(getResources(), R.drawable.hitchcock);
-        Bitmap bm_boyle = BitmapFactory.decodeResource(getResources(), R.drawable.boyle);
-        Image img1 = new Image("Amy", bm_amy);
-        Image img2 = new Image("Jake", bm_jake);
-        Image img3 = new Image("Hitchcock", bm_hitchcock);
-        Image img4 = new Image("Boyle", bm_boyle);
-        ((GlobalStorage) this.getApplication()).addImage(img1);
-        ((GlobalStorage) this.getApplication()).addImage(img2);
-        ((GlobalStorage) this.getApplication()).addImage(img3);
-        ((GlobalStorage) this.getApplication()).addImage(img4);
-    }
+
 
     private void checkPreferences(){
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("sharedPreferences", 0);
@@ -99,5 +94,25 @@ public class MainActivity extends BaseActivity {
             }
         });
         builder.show();
+    }
+    private void checkDBSize(){
+
+        class GetImage extends AsyncTask<Void, Void, Image> {
+
+            @Override
+            protected Image doInBackground(Void... voids) {
+                    return repo.getImageDao().getRandomImage(-1);
+            }
+
+            @Override
+            protected void onPostExecute(Image image) {
+                super.onPostExecute(image);
+                if(image == null){
+                    dataBaseIsEmpty = true;
+                }
+            }
+        }
+        GetImage gi = new GetImage();
+        gi.execute();
     }
 }
