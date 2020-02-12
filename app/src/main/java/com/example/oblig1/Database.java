@@ -2,26 +2,24 @@ package com.example.oblig1;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.transition.Explode;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Database extends BaseActivity {
 
     private ListView list;
     private ArrayList<Image> images;
     private CustomList adapter;
+    private ImageRepository repo;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
     @Override
@@ -39,19 +37,19 @@ public class Database extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_database);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-        adapter = new CustomList(Database.this);
+        repo = new ImageRepository(getApplication());
+        allImagesFromDB();
+    }
+    private void initVar(){
+        adapter = new CustomList(Database.this, images);
         list=findViewById(R.id.list);
         list.setAdapter(adapter);
-        makeEventListeners();
-
-        getWindow().setExitTransition(new Explode());
-
     }
 
+    /**
+     * Adds event listeners to buttons in the activity
+     */
     public void makeEventListeners(){
-        images = ((GlobalStorage) getApplication()).getImages();
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,13 +83,7 @@ public class Database extends BaseActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Image image = images.get(pos);
-
-                                if(((GlobalStorage) getApplication()).removeImage(image)){
-                                    adapter.remove(image);
-                                    Toast.makeText(Database.this, "You deleted " + image.getName() +" from the database", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    Toast.makeText(Database.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                                }
+                                deleteFromDB(image);
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -106,5 +98,49 @@ public class Database extends BaseActivity {
                 return true;
             }
         });
+    }
+
+    private void allImagesFromDB(){
+
+        class GetImage extends AsyncTask<Void, Void, List<Image>>{
+
+            @Override
+            protected List<Image> doInBackground(Void... voids) {
+                return repo.getImageDao().getAllImages();
+            }
+
+            @Override
+            protected void onPostExecute(List<Image> imageList) {
+                super.onPostExecute(imageList);
+                images = (ArrayList<Image>) imageList;
+                initVar();
+                makeEventListeners();
+            }
+        }
+        GetImage gi = new GetImage();
+        gi.execute();
+    }
+    private void deleteFromDB(final Image toBeRemoved){
+
+        class DeleteImage extends AsyncTask<Void, Void, Integer>{
+
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                return repo.getImageDao().removeImage(toBeRemoved.getImageId());
+            }
+
+            @Override
+            protected void onPostExecute(Integer numDelete) {
+                super.onPostExecute(numDelete);
+                if(numDelete>0){
+                    adapter.remove(toBeRemoved);
+                    Toast.makeText(Database.this, "You deleted " + toBeRemoved.getName() +" from the database", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(Database.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        DeleteImage di = new DeleteImage();
+        di.execute();
     }
 }

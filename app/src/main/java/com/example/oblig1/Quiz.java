@@ -2,7 +2,6 @@ package com.example.oblig1;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.lifecycle.Observer;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -22,14 +21,12 @@ public class Quiz extends BaseActivity {
     private int score = 0;
     private int total = 0;
     private ImageRepository repo;
-    private int dbSize;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         initVar();
         initView();
-        count();
         imageFromDb();
     }
 
@@ -73,6 +70,7 @@ public class Quiz extends BaseActivity {
             Toast.makeText(getApplicationContext(), "Incorrect! \nThe correct answer is: " + currentImage.getName(), Toast.LENGTH_LONG).show();
         }
         updateScore();
+        imageFromDb();
     }
     @Override
     public void onStop(){
@@ -92,41 +90,36 @@ public class Quiz extends BaseActivity {
      * Shows the score as a toast when the user exits the quiz
      */
     private void exitAndToast(){
-    finish();
-    Toast.makeText(getApplicationContext(),"You finished with a score of " + score +" out of " + total,Toast.LENGTH_SHORT).show();
+        finish();
+        Toast.makeText(getApplicationContext(),"You finished with a score of " + score +" out of " + total,Toast.LENGTH_SHORT).show();
 
     }
 
+    /**
+     * Gets the next image from the database. The same image cannot appear in a row
+     */
     private void imageFromDb(){
+
         class GetImage extends AsyncTask<Void, Void, Image> {
 
             @Override
             protected Image doInBackground(Void... voids) {
-                return repo.getImageDao().getImage(1);
+                Image image1 = repo.getImageDao().getRandomImage(currentImage.getImageId());
+                if(image1 == null){
+                    return repo.getImageDao().getRandomImage(-1);
+                }
+                return image1;
             }
 
             @Override
             protected void onPostExecute(Image image) {
                 super.onPostExecute(image);
+
                 imgView.setImageBitmap(image.getBitmap());
                 currentImage = image;
             }
-
         }
-        GetImage gi = new GetImage();
-        gi.execute();
-    }
-
-    /**
-     * Updates the local database size variable
-     */
-    private void count(){
-        repo.getImageDao().getCount().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-            dbSize = integer;
-            }
-        });
-    }
-
+            GetImage gi = new GetImage();
+            gi.execute();
+        }
 }

@@ -10,16 +10,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CustomList extends ArrayAdapter<Image> {
     private final Activity context;
 
-
-    public CustomList(Activity context) {
+    public CustomList(Activity context, ArrayList<Image> images) {
     super(context, R.layout.list_single);
         this.context = context;
-        this.addAll(((GlobalStorage) context.getApplication()).getImages());
+        this.addAll(images);
+
     }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
