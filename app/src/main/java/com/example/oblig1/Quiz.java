@@ -1,10 +1,8 @@
 package com.example.oblig1;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
+import androidx.lifecycle.Observer;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -13,35 +11,43 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.Collections;
-import java.util.ArrayList;
+
 public class Quiz extends BaseActivity {
 
     private EditText sb_ans;
     private Button sb_submit;
     private TextView sb_score;
     private ImageView imgView;
-    private String correctAnswer;
-    private ArrayList<Image> quiz;
+    private Image currentImage;
     private int score = 0;
     private int total = 0;
+    private ImageRepository repo;
+    private int dbSize;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        initVar();
+        initView();
+        count();
+        imageFromDb();
+    }
+
+    /**
+     * Initializes the variables
+     */
+    private void initVar(){
         imgView = findViewById(R.id.quizImageView);
         sb_ans = findViewById(R.id.submitText);
         sb_score = findViewById(R.id.tv_scoreText);
         sb_submit = findViewById(R.id.submitAnswer);
-
-        initView();
-        shuffleList();
+        repo = new ImageRepository(getApplication());
     }
 
+    /**
+     * Initializes the event listeners
+     */
     private void initView(){
-
         sb_ans.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -59,12 +65,12 @@ public class Quiz extends BaseActivity {
      * Checks whether the given answer is correct. Creates and shows a toast for either situation, and updates the scores
      */
     public void checkAnswer(View view){
-        if (isCorrect(sb_ans.getText().toString(), correctAnswer)){
+        if (sb_ans.getText().toString().equalsIgnoreCase(currentImage.getName())){
             score++;
             Toast.makeText(getApplicationContext(),"Correct!",Toast.LENGTH_SHORT).show();
-            getNext();
+            imageFromDb();
         }else {
-            Toast.makeText(getApplicationContext(), "Incorrect! \nThe correct answer is: " + correctAnswer, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Incorrect! \nThe correct answer is: " + currentImage.getName(), Toast.LENGTH_LONG).show();
         }
         updateScore();
     }
@@ -81,52 +87,46 @@ public class Quiz extends BaseActivity {
         sb_score.setText("Score: " + score + "/" + total);
         sb_ans.getText().clear();
     }
-    /**
-     * Shuffles the list at the beginning of the quiz to get a new order each time
-     */
-    private void shuffleList(){
-        quiz = ((GlobalStorage) this.getApplication()).getImages();
-        Collections.shuffle(quiz);
-
-        getNext();
-    }
-    private int counter = 0;
 
     /**
-     * Gets the next image from the ArrayList. If the end of the list is reached, the Activity is finished and Toast is created with final score
+     * Shows the score as a toast when the user exits the quiz
      */
-    private void getNext(){
-        if (counter < quiz.size()) {
-            imgView.setImageBitmap(quiz.get(counter).getBitmap());
-            correctAnswer = quiz.get(counter).getName();
-            counter++;
-            //The code under will make the input field go back in focus
-            sb_ans.post(new Runnable() {
-                @Override
-                public void run() {
-                    sb_ans.requestFocus();
-                }
-            });
-        }
-        //This way we avoid having images repeated in a row.
-        else if(counter == quiz.size() && !quiz.isEmpty()){
-            counter = 0;
-            shuffleList();
-            }
-    }
     private void exitAndToast(){
     finish();
     Toast.makeText(getApplicationContext(),"You finished with a score of " + score +" out of " + total,Toast.LENGTH_SHORT).show();
 
     }
 
-    /**
-     * Checks whether two strings are equal, not case sensitive
-     * @param a String one
-     * @param c String two
-     * @return True if they match, false if not
-     */
-    private boolean isCorrect(String a, String c){
-        return a.equalsIgnoreCase(c);
+    private void imageFromDb(){
+        class GetImage extends AsyncTask<Void, Void, Image> {
+
+            @Override
+            protected Image doInBackground(Void... voids) {
+                return repo.getImageDao().getImage(1);
+            }
+
+            @Override
+            protected void onPostExecute(Image image) {
+                super.onPostExecute(image);
+                imgView.setImageBitmap(image.getBitmap());
+                currentImage = image;
+            }
+
+        }
+        GetImage gi = new GetImage();
+        gi.execute();
     }
+
+    /**
+     * Updates the local database size variable
+     */
+    private void count(){
+        repo.getImageDao().getCount().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+            dbSize = integer;
+            }
+        });
+    }
+
 }

@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 public class MainActivity extends BaseActivity {
     private String m_Text = "";
-    private ImageRepository imageRepo; //TODO: Fortsett her. 
+    private ImageRepository imageRepo; //TODO: Fortsett her.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

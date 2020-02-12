@@ -10,8 +10,8 @@ import androidx.room.Query;
 
 @Dao
 public interface ImageDao {
-    @Query("SELECT * FROM image")
-    LiveData<ArrayList<Image>> getAllImages();
+//    @Query("SELECT * FROM image")
+//    LiveData<ArrayList<Image>> getAllImages();
 
     @Insert
     void addImage(Image image);
@@ -20,6 +20,8 @@ public interface ImageDao {
     void removeImage(int id);
 
     @Query("SELECT * FROM image WHERE imageId = :id")
-    LiveData<Image> getImage(int id);
+    Image getImage(int id);
 
+    @Query("SELECT COUNT(*) FROM image WHERE imageId NOT NULL")
+    LiveData<Integer> getCount();
 }

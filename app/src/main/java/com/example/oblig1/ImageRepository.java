@@ -10,4 +10,12 @@ public class ImageRepository {
         db = ImageRoomDatabase.getDatabase(application);
         imageDao = db.imageDao();
     }
+
+    public ImageDao getImageDao() {
+        return imageDao;
+    }
+
+    public ImageRoomDatabase getDb() {
+        return db;
+    }
 }

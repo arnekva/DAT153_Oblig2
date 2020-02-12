@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,7 +31,8 @@ public class AddImages extends BaseActivity {
     private Button addToDb;
     private Bitmap uploadBitmap;
     private ImageView iw;
-    EditText mEdit;
+    private EditText mEdit;
+    private ImageRepository repo;
 
     @Override
     protected void onStart() {
@@ -41,9 +43,10 @@ public class AddImages extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_images);
+        initVar();
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-        iw = findViewById(R.id.addImageViewer);
+
         Button uploadBtn = findViewById(R.id.addButton);
         uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,8 +84,13 @@ public class AddImages extends BaseActivity {
             }
         });
 
-    }
 
+    }
+    private void initVar(){
+        mEdit = findViewById(R.id.nameText);
+        iw = findViewById(R.id.addImageViewer);
+        repo = new ImageRepository(getApplication());
+    }
     /**
      * Requests access to gallery.
      * On newer versions of Android, the app must request access to gallery from the system. If granted, it will load selected image
@@ -137,8 +145,8 @@ public class AddImages extends BaseActivity {
      * Adds an image to the app database.
      * Checks whether the image file or name text is empty before adding.
      */
-    private void addImageToDB(){
-        mEdit = findViewById(R.id.nameText);
+    private void addImageToDBOld(){
+
         if(uploadBitmap!= null && !mEdit.getText().toString().trim().isEmpty()) {
             String name = mEdit.getText().toString();
             toBeUploaded = new Image(name, uploadBitmap);
@@ -150,11 +158,43 @@ public class AddImages extends BaseActivity {
             Toast.makeText(AddImages.this, "Image added to database", Toast.LENGTH_LONG).show();
         }else{
             if(mEdit.getText().toString().trim().isEmpty()){
-                Toast.makeText(AddImages.this, "You need to enter the name of the person", Toast.LENGTH_LONG).show();
+
             }else {
                 Toast.makeText(AddImages.this, "You need to upload an image first", Toast.LENGTH_LONG).show();
             }
         }
+    }
+    private void addImageToDB(){
+        final String name = mEdit.getText().toString();
+        if (name.trim().isEmpty()) {
+            Toast.makeText(AddImages.this, "You need to enter the name of the person", Toast.LENGTH_LONG).show();
+            mEdit.requestFocus();
+            return;
+        }
+        if (uploadBitmap == null) {
+            Toast.makeText(AddImages.this, "You need to upload an image first", Toast.LENGTH_LONG).show();
+            return;
+        }
+        class SaveImage extends AsyncTask<Void, Void, Void> {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Image image = new Image();
+                image.setName(name);
+                image.setEncodedImage(uploadBitmap);
+                repo.getImageDao().addImage(image);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                finish();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Toast.makeText(getApplicationContext(), "Image added to database", Toast.LENGTH_LONG).show();
+            }
+        }
+        SaveImage si = new SaveImage();
+        si.execute();
     }
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
