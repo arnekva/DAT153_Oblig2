@@ -1,4 +1,4 @@
 # DAT153 Oblig 2
 
-## Gruppemedlemmer
+### Gruppemedlemmer
 Arne Kvaleberg, Sivert Lunde
