@@ -131,6 +131,7 @@ public class Quiz extends BaseActivity {
             GetImage gi = new GetImage();
             gi.execute();
         }
+
     public Image getCurrentImage() {
         return currentImage;
     }

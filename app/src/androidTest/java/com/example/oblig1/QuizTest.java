@@ -45,7 +45,6 @@ public class QuizTest {
          onView(withId(999)).perform(typeText("Tester"));
          onView(withText("OK")).perform(click());
          onView(withId(R.id.startButton)).perform(click());
-
      }
     Quiz quizActivity = (Quiz) getActivityInstance();
     for(int i = 0; i<4;i++){

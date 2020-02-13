@@ -74,19 +74,23 @@ public class DatabaseTest {
         Database databaseActivity2 = (Database) getActivityInstance();
         int countAfter = databaseActivity2.getCount();
         assertEquals(countBefore+2, countAfter);
-
     }
 
     @Test
     public void checkDelete(){
-        onView(withId(R.id.DB)).perform(click());
+        try{
+            onView(withId(R.id.DB)).perform(click());
+        }catch(NoMatchingViewException e){
+            onView(withId(999)).perform(typeText("Tester"));
+            onView(withText("OK")).perform(click());
+            onView(withId(R.id.DB)).perform(click());
+        }
         Database databaseActivity = (Database) getActivityInstance();
         int countBefore = databaseActivity.getCount();
         onView(withText("Jake")).perform(longClick());
         onView(withText("Confirm")).perform(click());
         int countAfter = databaseActivity.getCount();
         assertEquals(countAfter, countBefore-1);
-
     }
 
     private void addImageToDB(Image image){
@@ -115,7 +119,6 @@ public class DatabaseTest {
         class SaveImage extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {
-
                 repo.getImageDao().nukeTable();
                 return null;
             }
