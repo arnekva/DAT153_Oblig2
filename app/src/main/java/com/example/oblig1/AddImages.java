@@ -9,8 +9,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.provider.MediaStore;
@@ -39,6 +37,7 @@ public class AddImages extends BaseActivity {
         overridePendingTransition(0,0);
         super.onStart();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +91,7 @@ public class AddImages extends BaseActivity {
         iw = findViewById(R.id.addImageViewer);
         repo = new ImageRepository(getApplication());
     }
+
     /**
      * Requests access to gallery.
      * On newer versions of Android, the app must request access to gallery from the system. If granted, it will load selected image
@@ -108,11 +108,13 @@ public class AddImages extends BaseActivity {
             loadUpImage();
         }
     }
+
     private void goBackToDB(){
         Intent intent = new Intent(this, Database.class);
         intent.putExtra("flag", "return");
         startActivity(intent);
     }
+
     /**
      * Loads an image from the device gallery
      */
@@ -121,6 +123,7 @@ public class AddImages extends BaseActivity {
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, REQUEST_UPLOAD_IMAGE);
     }
+
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);

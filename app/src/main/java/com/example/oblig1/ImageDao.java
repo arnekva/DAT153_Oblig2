@@ -1,9 +1,6 @@
 package com.example.oblig1;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -23,4 +20,8 @@ public interface ImageDao {
 
     @Query("SELECT * FROM image WHERE imageId NOT LIKE :id ORDER BY RANDOM() LIMIT 1;")
     Image getRandomImage(int id);
+
+    @Query("DELETE FROM image")
+    void nukeTable();
+
 }

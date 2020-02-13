@@ -1,16 +1,12 @@
 package com.example.oblig1;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CustomList extends ArrayAdapter<Image> {
@@ -22,6 +18,7 @@ public class CustomList extends ArrayAdapter<Image> {
         this.addAll(images);
 
     }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();

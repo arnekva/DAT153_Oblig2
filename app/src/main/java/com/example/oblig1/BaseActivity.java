@@ -12,6 +12,7 @@ public class BaseActivity extends AppCompatActivity {
         intent.putExtra("flag", "homebtn");
         startActivity(intent);
     }
+
     public void goToSettings(View view) {
         Intent intent = new Intent(this, Settings.class);
         startActivity(intent);

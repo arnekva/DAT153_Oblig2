@@ -20,6 +20,15 @@ public class Quiz extends BaseActivity {
     private Image currentImage;
     private int score = 0;
     private int total = 0;
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
     private ImageRepository repo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +38,6 @@ public class Quiz extends BaseActivity {
         initView();
         imageFromDb();
     }
-
-
 
     /**
      * Initializes the variables
@@ -73,8 +80,8 @@ public class Quiz extends BaseActivity {
             Toast.makeText(getApplicationContext(), "Incorrect! \nThe correct answer is: " + currentImage.getName(), Toast.LENGTH_LONG).show();
         }
         updateScore();
-        imageFromDb();
     }
+
     @Override
     public void onStop(){
         super.onStop();

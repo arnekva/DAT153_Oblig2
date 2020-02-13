@@ -47,10 +47,12 @@ public class Settings extends AppCompatActivity {
             Toast.makeText(Settings.this, "Name cannot be empty", Toast.LENGTH_LONG).show();
         }
     }
+
     private String getOwner(){
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("sharedPreferences", 0);
         return pref.getString("owner", null);
     }
+
     public static String capitalizeWord(String str){
         String words[]=str.split("\\s");
         String capitalizeWord="";

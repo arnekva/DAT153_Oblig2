@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
-import android.transition.Explode;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -27,10 +26,15 @@ public class Database extends BaseActivity {
         overridePendingTransition(0,0);
         super.onStart();
     }
+
     public void gotoAdd(View v){
         Intent intent = new Intent(this, AddImages.class);
         intent.putExtra("flag", "DB");
         startActivity(intent);
+    }
+
+    public int getCount(){
+        return images.size();
     }
 
     @Override
@@ -38,8 +42,10 @@ public class Database extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_database);
         repo = new ImageRepository(getApplication());
+
         allImagesFromDB();
     }
+
     private void initVar(){
         adapter = new CustomList(Database.this, images);
         list=findViewById(R.id.list);
@@ -120,6 +126,7 @@ public class Database extends BaseActivity {
         GetImage gi = new GetImage();
         gi.execute();
     }
+
     private void deleteFromDB(final Image toBeRemoved){
 
         class DeleteImage extends AsyncTask<Void, Void, Integer>{
@@ -134,6 +141,7 @@ public class Database extends BaseActivity {
                 super.onPostExecute(numDelete);
                 if(numDelete>0){
                     adapter.remove(toBeRemoved);
+                    images.remove(toBeRemoved);
                     Toast.makeText(Database.this, "You deleted " + toBeRemoved.getName() +" from the database", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(Database.this, "Something went wrong", Toast.LENGTH_SHORT).show();
