@@ -49,11 +49,7 @@ public class Settings extends AppCompatActivity {
     }
     private String getOwner(){
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("sharedPreferences", 0);
-        String prefOwner = pref.getString("owner", null);
-        if(prefOwner == null){
-            return "unknown";
-        }
-        return prefOwner;
+        return pref.getString("owner", null);
     }
     public static String capitalizeWord(String str){
         String words[]=str.split("\\s");

@@ -3,12 +3,10 @@ package com.example.oblig1;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
 import java.io.ByteArrayOutputStream;
 
 @Entity(tableName = "image")
@@ -25,11 +23,6 @@ public class Image {
     private String encodedImage;
 
     public Image(){}
-
-    public Image(String name, Bitmap bitmap){
-        this.name = name;
-        setEncodedImage(bitmap);
-    }
 
     public String getName() {
         return name;

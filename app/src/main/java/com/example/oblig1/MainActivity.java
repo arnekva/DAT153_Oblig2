@@ -3,6 +3,7 @@ package com.example.oblig1;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +29,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         repo = new ImageRepository(getApplication());
         dataBaseIsEmpty = false;
+
         checkDBSize();
         checkPreferences();
     }
@@ -64,8 +66,10 @@ public class MainActivity extends BaseActivity {
     private void checkPreferences(){
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("sharedPreferences", 0);
         final Editor editor = pref.edit();
+        editor.remove("owner");
+        editor.commit();
         String owner = pref.getString("owner", null);
-        if(owner == null){
+        if(owner == null || owner.equals("")){
             inputName(editor);
         }else{
             String checkFlag= getIntent().getStringExtra("flag");
@@ -75,20 +79,25 @@ public class MainActivity extends BaseActivity {
 
         }
     }
+
     public void inputName(Editor e){
         final Editor editor = e;
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setCancelable(false);
 
-        builder.setTitle("Enter name");
+        builder.setTitle("Owner");
         builder.setMessage("Please enter your name");
         final EditText input = new EditText(this);
+        input.setId(999);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
+                if(m_Text.equals("")){
+                    m_Text = "rip";
+                }
                 editor.putString("owner", m_Text);
                 editor.commit();
             }

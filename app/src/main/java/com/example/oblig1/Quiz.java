@@ -30,6 +30,8 @@ public class Quiz extends BaseActivity {
         imageFromDb();
     }
 
+
+
     /**
      * Initializes the variables
      */
@@ -40,6 +42,7 @@ public class Quiz extends BaseActivity {
         sb_submit = findViewById(R.id.submitAnswer);
         repo = new ImageRepository(getApplication());
     }
+
 
     /**
      * Initializes the event listeners
@@ -121,4 +124,7 @@ public class Quiz extends BaseActivity {
             GetImage gi = new GetImage();
             gi.execute();
         }
+    public Image getCurrentImage() {
+        return currentImage;
+    }
 }
