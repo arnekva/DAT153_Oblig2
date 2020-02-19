@@ -20,7 +20,7 @@ public class Image {
     @ColumnInfo(name = "name")
     private String name;
 
-    private String encodedImage;
+    private byte[] encodedImage;
 
     public Image(){}
 
@@ -38,25 +38,25 @@ public class Image {
     }
 
     public Bitmap getBitmap() {
-        byte[] byteArray = Base64.decode(this.encodedImage, Base64.DEFAULT);
-        Bitmap bm = BitmapFactory.decodeByteArray(byteArray, 0 ,byteArray.length);
+        // byte[] byteArray = Base64.decode(this.encodedImage, Base64.DEFAULT);
+        Bitmap bm = BitmapFactory.decodeByteArray(this.encodedImage, 0 ,this.encodedImage.length);
         return bm;
     }
 
-    public String getEncodedImage(){
+    public byte[] getEncodedImage(){
         return encodedImage;
     }
 
-    public void setEncodedImage(String encodedImage){
+    public void setEncodedImage(byte[] encodedImage){
         this.encodedImage = encodedImage;
     }
 
     public void setEncodedImage(Bitmap bitmap) {
         ByteArrayOutputStream boas = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, boas ); //bm is the bitmap object
-        byte[] byteArrayImage = boas.toByteArray();
-        String encodedImage = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
-        this.encodedImage = encodedImage;
+        encodedImage = boas.toByteArray();
+//        String encodedImage = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+//        this.encodedImage = encodedImage;
     }
 
     public int getImageId() {

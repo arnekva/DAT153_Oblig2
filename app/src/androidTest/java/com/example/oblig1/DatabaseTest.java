@@ -48,7 +48,7 @@ public class DatabaseTest {
             nukeTable();
             Bitmap bm1 = BitmapFactory.decodeResource(startMain.getActivity().getResources(), R.drawable.jake);
             Image img1 = new Image("Jake", bm1);
-            addImageToDB(img1);
+            addImageToDB(repo,img1);
             MainActivity.dataBaseIsEmpty = false;
         }
 
@@ -66,10 +66,10 @@ public class DatabaseTest {
         onView(withId(R.id.button5)).perform(click());
         Bitmap bm2 = BitmapFactory.decodeResource(databaseActivity.getResources(), R.drawable.hitchcock);
         Image img2 = new Image("Hitchcock", bm2);
-        addImageToDB(img2);
+        addImageToDB(repo,img2);
         Bitmap bm3 = BitmapFactory.decodeResource(databaseActivity.getResources(), R.drawable.boyle);
         Image img3 = new Image("Boyle", bm3);
-        addImageToDB(img3);
+        addImageToDB(repo,img3);
         onView(withId(R.id.DB)).perform(click());
         Database databaseActivity2 = (Database) getActivityInstance();
         int countAfter = databaseActivity2.getCount();
@@ -93,7 +93,7 @@ public class DatabaseTest {
         assertEquals(countAfter, countBefore-1);
     }
 
-    private void addImageToDB(Image image){
+    public static void addImageToDB(final ImageRepository repo, Image image){
 
     final Image imagetoAdd = image;
         class SaveImage extends AsyncTask<Void, Void, Void> {

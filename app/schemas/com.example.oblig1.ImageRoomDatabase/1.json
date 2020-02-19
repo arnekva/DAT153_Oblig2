@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1431463531bc42e3834c5c6ba081c695",
+    "identityHash": "8224321d4983490e9cb60b8a973a6d82",
     "entities": [
       {
         "tableName": "image",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`imageId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `encodedImage` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`imageId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `encodedImage` BLOB)",
         "fields": [
           {
             "fieldPath": "imageId",
@@ -23,7 +23,7 @@
           {
             "fieldPath": "encodedImage",
             "columnName": "encodedImage",
-            "affinity": "TEXT",
+            "affinity": "BLOB",
             "notNull": false
           }
         ],
@@ -39,7 +39,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1431463531bc42e3834c5c6ba081c695\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8224321d4983490e9cb60b8a973a6d82\")"
     ]
   }
 }

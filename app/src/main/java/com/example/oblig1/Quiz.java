@@ -29,7 +29,7 @@ public class Quiz extends BaseActivity {
         return total;
     }
 
-    private ImageRepository repo;
+    public ImageRepository repo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +44,7 @@ public class Quiz extends BaseActivity {
      */
     private void initVar(){
         imgView = findViewById(R.id.quizImageView);
+        assert(imgView!=null);
         sb_ans = findViewById(R.id.submitText);
         sb_score = findViewById(R.id.tv_scoreText);
         sb_submit = findViewById(R.id.submitAnswer);

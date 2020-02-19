@@ -72,8 +72,8 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void inputName(Editor e){
-        final Editor editor = e;
+    public void inputName(final Editor editor){
+        // final Editor editor = e;
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setCancelable(false);
 
@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
-                if(m_Text.equals("")){
+                if(m_Text.isEmpty()){
                     m_Text = "rip";
                 }
                 editor.putString("owner", m_Text);

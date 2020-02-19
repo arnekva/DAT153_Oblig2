@@ -5,6 +5,9 @@ import android.app.Activity;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import androidx.test.runner.lifecycle.Stage;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.KeyEvent;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.intent.Intents;
@@ -33,9 +36,20 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(AndroidJUnit4.class)
 public class QuizTest {
+    private ImageRepository repo;
 
     @Rule
-    public ActivityTestRule<MainActivity> startMain = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<Quiz> startMain = new ActivityTestRule<>(Quiz.class);
+
+    @Before
+    public void onBefore(){
+        repo = startMain.getActivity().repo; // new ImageRepository(startMain.getActivity().getApplication());
+//        nukeTable();
+        Bitmap bm1 = BitmapFactory.decodeResource(startMain.getActivity().getResources(), R.drawable.jake);
+        Image img1 = new Image("Jake", bm1);
+        DatabaseTest.addImageToDB(repo,img1);
+        MainActivity.dataBaseIsEmpty = false;
+    }
 
     @Test
     public void startQuiz(){
